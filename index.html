@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ChatGPT Klimarechner</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 2em;
+      }
+      h1 {
+        margin-bottom: 0.5em;
+      }
+      #anleitung {
+        background: #f0f8ff;
+        border-left: 4px solid #0077cc;
+        padding: 1em;
+        margin-bottom: 1.5em;
+        border-radius: 6px;
+      }
+      #fileLabel {
+        display: inline-block;
+        padding: 0.6em 1.2em;
+        background: #0077cc;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-bottom: 1em;
+      }
+      #fileLabel:hover {
+        background: #005fa3;
+      }
+      #fileInput {
+        display: none;
+      }
+      #settings {
+        margin: 1.5em 0;
+        padding: 1em;
+        background: #eef;
+        border-radius: 8px;
+      }
+      #settings label {
+        display: block;
+        margin: 0.6em 0;
+      }
+      #stats {
+        margin: 1em 0;
+        padding: 1em;
+        background: #f5f5f5;
+        border-radius: 8px;
+      }
+      #equivalents {
+        margin: 1em 0;
+        padding: 1em;
+        background: #eafbea;
+        border-radius: 8px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 1em;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 0.5em;
+        text-align: left;
+      }
+      th {
+        background: #ddd;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      th span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3em;
+      }
+      th.sort-asc span::after {
+        content: "▲";
+      }
+      th.sort-desc span::after {
+        content: "▼";
+      }
+      tr:nth-child(even) {
+        background: #f9f9f9;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ChatGPT Klimarechner</h1>
+
+    <!-- Anleitung -->
+    <div id="anleitung">
+      <h2>Anleitung</h2>
+      <p>
+        Um deine ChatGPT-Daten auszuwerten, musst du zuerst einen Datenexport
+        anfordern. Gehe dazu in der <strong>ChatGPT-App oder im Web</strong> auf
+        <em>Einstellungen → Datenkontrollen → Exportieren</em>. Du erhältst eine
+        E-Mail mit einem Link zum Herunterladen deiner Daten.
+      </p>
+      <p>
+        Direkt-Link zu den Daten-Einstellungen:
+        <a href="https://chatgpt.com/#settings/DataControls" target="_blank">
+          chatgpt.com/#settings/DataControls</a
+        >
+      </p>
+      <p>
+        Entpacke die ZIP-Datei. Darin befindet sich eine Datei mit dem Namen
+        <code>conversations.json</code>. Lade
+        <strong>nur diese Datei</strong> hier hoch.
+      </p>
+      <p>
+        Quelle:
+        <a
+          href="https://help.openai.com/en/articles/7260999-how-do-i-export-my-chatgpt-history-and-data"
+          target="_blank"
+        >
+          Offizielle OpenAI-Anleitung</a
+        >
+      </p>
+    </div>
+
+    <!-- Datei Eingabe -->
+    <label for="fileInput" id="fileLabel"
+      >📂 conversations.json auswählen</label
+    >
+    <input type="file" id="fileInput" accept=".json" />
+
+    <!-- Einstellungen -->
+    <div id="settings">
+      <h2>Einstellungen</h2>
+      <label>
+        Strompreis (€/kWh):
+        <input type="number" id="strompreis" value="0.30" step="0.01" />
+        <a href="https://www.stromauskunft.de/strompreise/" target="_blank"
+          >Quelle</a
+        >
+      </label>
+      <label>
+        CO₂-Ausstoß (g/kWh):
+        <input type="number" id="co2" value="400" step="10" />
+        <a href="https://www.umweltbundesamt.de/" target="_blank">Quelle</a>
+      </label>
+      <label>
+        Energie pro 1.000 Tokens (Wh):
+        <input type="number" id="energie" value="0.355" step="0.01" />
+        <a href="https://arxiv.org/abs/2304.10198" target="_blank">Quelle</a>
+      </label>
+      <label>
+        <input type="checkbox" id="showTitles" checked /> Chat-Titel anzeigen
+      </label>
+    </div>
+
+    <!-- Statistik -->
+    <div id="stats"></div>
+    <!-- Equivalente -->
+    <div id="equivalents"></div>
+
+    <!-- Ausgabe -->
+    <div id="output"></div>
+
+    <script>
+      let chatData = null;
+
+      function estimateTokens(text) {
+        if (!text) return 0;
+        const words = text.trim().split(/\s+/).length;
+        return Math.round(words * 1.3);
+      }
+
+      function formatNumber(num) {
+        return num.toLocaleString("de-DE");
+      }
+
+      function render() {
+        if (!chatData) return;
+
+        const data = chatData;
+
+        let userCount = 0,
+          userTokens = 0,
+          userWords = 0;
+        let assistantCount = 0,
+          assistantTokens = 0,
+          assistantWords = 0;
+
+        const chats = [];
+
+        data.forEach((conv) => {
+          if (!conv.mapping) return;
+
+          let msgCount = 0,
+            wordsCount = 0,
+            tokensCount = 0;
+          let date = conv.create_time
+            ? new Date(conv.create_time * 1000)
+            : null;
+
+          Object.values(conv.mapping).forEach((node) => {
+            if (!node.message) return;
+            const role = node.message.author?.role;
+            const parts = node.message.content?.parts || [];
+            const content = parts.join(" ");
+            const tokens = estimateTokens(content);
+            const words = content.trim().split(/\s+/).length;
+
+            msgCount++;
+            wordsCount += words;
+            tokensCount += tokens;
+
+            if (role === "user") {
+              userCount++;
+              userTokens += tokens;
+              userWords += words;
+            } else if (role === "assistant") {
+              assistantCount++;
+              assistantTokens += tokens;
+              assistantWords += words;
+            }
+          });
+
+          chats.push({
+            title: conv.title || "Ohne Titel",
+            date: date ? date.toISOString().split("T")[0] : "-",
+            messages: msgCount,
+            words: wordsCount,
+            tokens: tokensCount,
+          });
+        });
+
+        // Einstellungen
+        const energieWh = parseFloat(document.getElementById("energie").value);
+        const strompreis = parseFloat(
+          document.getElementById("strompreis").value
+        );
+        const co2 = parseFloat(document.getElementById("co2").value);
+        const showTitles = document.getElementById("showTitles").checked;
+
+        const totalTokens = userTokens + assistantTokens;
+        const kWh = ((totalTokens / 1000) * energieWh) / 1000;
+        const kosten = kWh * strompreis;
+        const co2Emission = kWh * co2;
+
+        // Statistik
+        const stats = document.getElementById("stats");
+        stats.innerHTML = `
+          <h2>Statistik</h2>
+          <table>
+            <thead><tr>
+              <th>Rolle</th>
+              <th>Nachrichten</th>
+              <th>Wörter</th>
+              <th>Tokens</th>
+            </tr></thead>
+            <tbody>
+              <tr><td>User</td><td>${formatNumber(
+                userCount
+              )}</td><td>${formatNumber(userWords)}</td><td>${formatNumber(
+          userTokens
+        )}</td></tr>
+              <tr><td>Assistant</td><td>${formatNumber(
+                assistantCount
+              )}</td><td>${formatNumber(assistantWords)}</td><td>${formatNumber(
+          assistantTokens
+        )}</td></tr>
+              <tr><td><strong>Gesamt</strong></td><td>${formatNumber(
+                userCount + assistantCount
+              )}</td><td>${formatNumber(
+          userWords + assistantWords
+        )}</td><td>${formatNumber(totalTokens)}</td></tr>
+            </tbody>
+          </table>
+          <p><strong>Energieverbrauch:</strong> ${kWh
+            .toFixed(3)
+            .replace(".", ",")} kWh</p>
+          <p><strong>Stromkosten:</strong> ${kosten
+            .toFixed(2)
+            .replace(".", ",")} €</p>
+          <p><strong>CO₂-Emissionen:</strong> ${formatNumber(
+            Math.round(co2Emission)
+          )} g</p>
+        `;
+
+        // Äquivalente
+        const equivalents = document.getElementById("equivalents");
+        const smartphoneCharge = kWh / 0.005; // 5 Wh pro Ladung
+        const netflixHours = kWh / 0.15; // 0,15 kWh pro Stunde
+        const switchHours = kWh / 0.018; // 18 W tragbar
+
+        const carKm = co2Emission / 150; // ca. 150 g/km
+        const balloons = co2Emission / 16; // 1 Ballon ~16 g CO₂
+
+        equivalents.innerHTML = `
+          <h2>Anschauliche Äquivalente</h2>
+          <p><strong>⚡ Energieverbrauch:</strong></p>
+          <ul>
+            <li>${formatNumber(
+              smartphoneCharge.toFixed(1)
+            )} × Smartphone aufladen (1 Ladung ~5 Wh)</li>
+            <li>${formatNumber(
+              netflixHours.toFixed(1)
+            )} Stunden Netflix streamen (0,15 kWh/h)</li>
+            <li>${formatNumber(
+              switchHours.toFixed(1)
+            )} Stunden unterwegs Switch spielen (18 W)</li>
+          </ul>
+          <p><strong>🌍 CO₂-Emissionen:</strong></p>
+          <ul>
+            <li>entspricht einer Autofahrt von ~${formatNumber(
+              carKm.toFixed(1)
+            )} km (150 g/km)</li>
+            <li>entspricht dem Aufblasen von ~${formatNumber(
+              balloons.toFixed(1)
+            )} Luftballons (16 g/CO₂ pro Ballon)</li>
+          </ul>
+        `;
+
+        // Tabelle mit Chats
+        const output = document.getElementById("output");
+        let html = `<h2>Chats</h2><table id="chatTable"><thead><tr>`;
+        if (showTitles) html += `<th data-key="title"><span>Titel</span></th>`;
+        html += `
+          <th data-key="date"><span>Datum</span></th>
+          <th data-key="messages"><span>Nachrichten</span></th>
+          <th data-key="words"><span>Wörter</span></th>
+          <th data-key="tokens"><span>Tokens</span></th>
+        </tr></thead><tbody>`;
+
+        chats.forEach((c) => {
+          html += `<tr>
+            ${showTitles ? `<td>${c.title}</td>` : ""}
+            <td>${c.date}</td>
+            <td>${formatNumber(c.messages)}</td>
+            <td>${formatNumber(c.words)}</td>
+            <td>${formatNumber(c.tokens)}</td>
+          </tr>`;
+        });
+
+        html += "</tbody></table>";
+        output.innerHTML = html;
+
+        // Sortierung
+        const table = document.getElementById("chatTable");
+        const headers = table.querySelectorAll("th");
+        headers.forEach((th) => {
+          th.addEventListener("click", () => {
+            const key = th.dataset.key;
+            const tbody = table.querySelector("tbody");
+            const rows = Array.from(tbody.querySelectorAll("tr"));
+            const asc = !th.classList.contains("sort-asc");
+
+            headers.forEach((h) => h.classList.remove("sort-asc", "sort-desc"));
+            th.classList.add(asc ? "sort-asc" : "sort-desc");
+
+            rows.sort((a, b) => {
+              let valA = a.cells[th.cellIndex].innerText;
+              let valB = b.cells[th.cellIndex].innerText;
+
+              if (key === "date") {
+                return asc
+                  ? new Date(valA) - new Date(valB)
+                  : new Date(valB) - new Date(valA);
+              } else if (key === "title") {
+                return asc
+                  ? valA.localeCompare(valB, "de", { sensitivity: "base" })
+                  : valB.localeCompare(valA, "de", { sensitivity: "base" });
+              } else {
+                valA = valA.replace(/\./g, "").replace(",", ".");
+                valB = valB.replace(/\./g, "").replace(",", ".");
+                return asc ? valA - valB : valB - valA;
+              }
+            });
+
+            tbody.innerHTML = "";
+            rows.forEach((r) => tbody.appendChild(r));
+          });
+        });
+      }
+
+      // Datei laden
+      document
+        .getElementById("fileInput")
+        .addEventListener("change", async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const text = await file.text();
+          chatData = JSON.parse(text);
+          render();
+        });
+
+      // Einstellungen triggern Re-Render
+      document.querySelectorAll("#settings input").forEach((el) => {
+        el.addEventListener("input", render);
+        el.addEventListener("change", render);
+      });
+    </script>
+  </body>
+</html>
