@@ -1,0 +1,22 @@
+title: ecoprompt
+lang: de
+url: https://ecoprompt.timdepping.de
+baseurl: ""
+description: Dein ChatGPT Ressourcenverbrauch
+
+plugins:
+  - jekyll-sitemap
+
+exclude:
+  - README.md
+
+sass:
+  sass_dir: _sass
+  style: expanded
+
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: null

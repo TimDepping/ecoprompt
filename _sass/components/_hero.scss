@@ -1,0 +1,47 @@
+.hero {
+  padding: 2rem 0;
+  text-align: center;
+  display: grid;
+  gap: 1.75rem;
+  justify-items: center;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: clamp(2.1rem, 4.8vw, 3.1rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  max-width: 24ch;
+}
+
+.hero-tagline {
+  margin: 0;
+  font-size: clamp(1.15rem, 3vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--md-sys-color-on-background);
+  max-width: 34ch;
+}
+
+.section-intro {
+  margin: 0 0 2rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+@include respond-to(sm, down) {
+  .hero {
+    padding: 1.5rem 0 1.75rem;
+    gap: 1.25rem;
+  }
+
+  .hero-tagline {
+    line-height: 1.6;
+  }
+}
+
+@include respond-to(md) {
+  .hero {
+    padding-top: 2.5rem;
+  }
+}

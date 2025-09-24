@@ -1,400 +1,305 @@
+---
+layout: null
+---
+
 <!DOCTYPE html>
 <html lang="de">
   <head>
-    <meta charset="UTF-8" />
-    <title>EcoPromt: ChatGPT Klimarechner</title>
-    <style>
-      body {
-        font-family: sans-serif;
-        margin: 2em;
-      }
-      h1 {
-        margin-bottom: 0.5em;
-      }
-      #anleitung {
-        background: #f0f8ff;
-        border-left: 4px solid #0077cc;
-        padding: 1em;
-        margin-bottom: 1.5em;
-        border-radius: 6px;
-      }
-      #fileLabel {
-        display: inline-block;
-        padding: 0.6em 1.2em;
-        background: #0077cc;
-        color: white;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: bold;
-        margin-bottom: 1em;
-      }
-      #fileLabel:hover {
-        background: #005fa3;
-      }
-      #fileInput {
-        display: none;
-      }
-      #settings {
-        margin: 1.5em 0;
-        padding: 1em;
-        background: #eef;
-        border-radius: 8px;
-      }
-      #settings label {
-        display: block;
-        margin: 0.6em 0;
-      }
-      #stats {
-        margin: 1em 0;
-        padding: 1em;
-        background: #f5f5f5;
-        border-radius: 8px;
-      }
-      #equivalents {
-        margin: 1em 0;
-        padding: 1em;
-        background: #eafbea;
-        border-radius: 8px;
-      }
-      table {
-        border-collapse: collapse;
-        width: 100%;
-        margin-top: 1em;
-      }
-      th,
-      td {
-        border: 1px solid #ccc;
-        padding: 0.5em;
-        text-align: left;
-      }
-      th {
-        background: #ddd;
-        cursor: pointer;
-        white-space: nowrap;
-      }
-      th span {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.3em;
-      }
-      th.sort-asc span::after {
-        content: "▲";
-      }
-      th.sort-desc span::after {
-        content: "▼";
-      }
-      tr:nth-child(even) {
-        background: #f9f9f9;
-      }
-    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ site.title }} – {{ site.description }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Domine:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/logo.svg' | relative_url }}" />
+    <link rel="icon" type="image/x-icon" href="{{ '/assets/img/favicon.ico' | relative_url }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/img/apple-touch-icon.png' | relative_url }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="{{ '/assets/img/apple-touch-icon-precomposed.png' | relative_url }}" />
+    <link rel="stylesheet" href="{{ '/assets/css/theme.css' | relative_url }}" />
   </head>
-  <body>
-    <h1>EcoPromt: ChatGPT Klimarechner</h1>
+  <body class="dark ecoprompt-page">
+    <div class="page-shell">
+      <header class="site-header" aria-label="Hauptnavigation">
+        <a class="brand" href="#top" aria-label="ecoprompt Startseite">
+          <img
+            class="brand-logo"
+            src="{{ '/assets/img/logo.svg' | relative_url }}"
+            alt="ecoprompt"
+            width="32"
+            height="32"
+          />
+          <span class="brand-name">ecoprompt</span>
+        </a>
+        <nav class="site-nav">
+          <button
+            class="theme-toggle"
+            type="button"
+            data-theme-toggle
+            data-theme="dark"
+            aria-pressed="true"
+            aria-label="In helles Design wechseln"
+          >
+            <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                focusable="false"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2" />
+                <path d="M12 20v2" />
+                <path d="m4.93 4.93 1.41 1.41" />
+                <path d="m17.66 17.66 1.41 1.41" />
+                <path d="M2 12h2" />
+                <path d="M20 12h2" />
+                <path d="m6.34 17.66-1.41 1.41" />
+                <path d="m17.66 6.34 1.41-1.41" />
+              </svg>
+            </span>
+            <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                focusable="false"
+              >
+                <path d="M21.752 15.002A9.718 9.718 0 0112 21.75a9.75 9.75 0 01-9.75-9.75 9.718 9.718 0 016.748-9.252.75.75 0 01.842 1.074 7.5 7.5 0 008.588 10.588.75.75 0 011.074.842z" />
+              </svg>
+            </span>
+          </button>
+        </nav>
+      </header>
 
-    <!-- Anleitung -->
-    <div id="anleitung">
-      <h2>Anleitung</h2>
-      <p>
-        Um deine ChatGPT-Daten auszuwerten, musst du zuerst einen Datenexport
-        anfordern. Gehe dazu in der <strong>ChatGPT-App oder im Web</strong> auf
-        <em>Einstellungen → Datenkontrollen → Exportieren</em>. Du erhältst eine
-        E-Mail mit einem Link zum Herunterladen deiner Daten.
-      </p>
-      <p>
-        Direkt-Link zu den Daten-Einstellungen:
-        <a href="https://chatgpt.com/#settings/DataControls" target="_blank">
-          chatgpt.com/#settings/DataControls</a
-        >
-      </p>
-      <p>
-        Entpacke die ZIP-Datei. Darin befindet sich eine Datei mit dem Namen
-        <code>conversations.json</code>. Lade
-        <strong>nur diese Datei</strong> hier hoch.
-      </p>
-      <p>
-        Quelle:
-        <a
-          href="https://help.openai.com/en/articles/7260999-how-do-i-export-my-chatgpt-history-and-data"
-          target="_blank"
-        >
-          Offizielle OpenAI-Anleitung</a
-        >
-      </p>
+      <main class="page" id="top">
+        <aside class="page-notice" role="status">
+          <strong>Hinweis:</strong> Diese Seite befindet sich aktuell noch in Bearbeitung. Inhalte können sich ändern.
+        </aside>
+        <section class="hero" aria-labelledby="hero-title">
+          <h1 id="hero-title" class="hero-title">
+            Was verbraucht deine ChatGPT-Nutzung an Ressourcen?
+          </h1>
+          <p class="hero-tagline">
+            Jede Anfrage verbraucht Wasser und Strom und verursacht CO₂‑Emissionen. ecoprompt macht deinen Anteil sichtbar!
+          </p>
+        </section>
+
+        <section class="process" aria-labelledby="process-title">
+          <h2 id="process-title">So funktioniert's</h2>
+          <p class="section-intro">
+            ecoprompt analysiert deinen ChatGPT-Datenexport lokal auf deinem
+            Gerät. Folge den Schritten:
+          </p>
+          <ol class="step-list">
+            <li class="step">
+              <div class="step-number">1</div>
+              <div class="step-body">
+                <p class="step-copy">
+                  Exportiere deine Daten unter Datenkontrollen in den
+                  ChatGPT-Einstellungen.<br />
+                  <a
+                    href="https://chatgpt.com/#settings/DataControls"
+                    >Hier geht's zum Export</a
+                  >.
+                </p>
+              </div>
+            </li>
+            <li class="step">
+              <div class="step-number">2</div>
+              <div class="step-body">
+                <p class="step-copy">
+                  Lade die Export-Datei aus der E-Mail herunter.<br />
+                  Bewahre die ZIP-Datei auf deinem Gerät auf.
+                </p>
+              </div>
+            </li>
+            <li class="step">
+              <div class="step-number">3</div>
+              <div class="step-body">
+                <p class="step-copy">
+                  Öffne die Datei „conversations.json“ aus dem Export direkt in
+                  ecoprompt.<br />
+                  Deine Daten verlassen dein Gerät nicht und werden nicht
+                  gespeichert.
+                </p>
+              </div>
+            </li>
+          </ol>
+          <div class="action-group" id="upload">
+            <input
+              class="file-input"
+              type="file"
+              id="chat-export-input"
+              accept="application/json,.json"
+              aria-label="ChatGPT-Export auswählen"
+              tabindex="-1"
+              aria-describedby="upload-hint"
+            />
+            <button class="btn btn-primary" type="button" id="open-file-btn">
+              Datei öffnen
+            </button>
+            <button class="btn btn-secondary" type="button" id="jump-to-results" disabled aria-disabled="true">
+              Zum Ergebnis
+            </button>
+          </div>
+          <p class="upload-hint is-hidden" id="upload-hint"></p>
+          <div class="error-banner is-hidden" id="upload-error" role="alert"></div>
+        </section>
+
+        <section class="calculation" aria-labelledby="calculation-title">
+          <h2 id="calculation-title">So wird dein Ergebnis berechnet</h2>
+          <div class="calculation-block">
+            <h3>Verbrauch an Strom bzw. Wasser</h3>
+            <p>Anzahl deiner Prompts × Wattstunden bzw. Wasser in Milliliter</p>
+          </div>
+          <div class="calculation-divider" aria-hidden="true"></div>
+          <div class="calculation-block">
+            <h3>CO₂‑Emissionen</h3>
+            <p>
+              Verbrauch an Strom in Wattstunden × durchschnittlicher
+              CO₂-Verbrauch pro Wattstunde
+            </p>
+          </div>
+        </section>
+
+        <section class="results" aria-labelledby="results-title">
+          <h2 id="results-title">Dein Ergebnis</h2>
+          <p class="section-intro">
+            Es gibt unterschiedliche Quellen zur Berechnung. Wähle die Quelle,
+            der du vertrauen möchtest:
+          </p>
+          <div class="tabs" aria-label="Quellen">
+            {% assign sources = site.data.sources %}
+            {% for source in sources %}
+            <button
+              class="tab{% if forloop.first %} is-active{% endif %}"
+              type="button"
+              data-source-button="{{ source.id }}"
+              aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+            >
+              {{ source.label }}
+            </button>
+            {% endfor %}
+          </div>
+          <article
+            class="result-card"
+            aria-label="Auswertung basierend auf OpenAI"
+            data-result-card
+          >
+            <header class="result-header">
+              <p data-result-headline aria-live="polite">
+                Deine Werte erscheinen hier, sobald du deinen Export lädst.
+              </p>
+            </header>
+            <dl class="metric-grid is-dimmed" data-results-grid>
+              <div class="metric" data-metric="water">
+                <dt data-metric-value="water">—</dt>
+                <dd data-metric-equivalent="water">—</dd>
+              </div>
+              <div class="metric" data-metric="energy">
+                <dt data-metric-value="energy">—</dt>
+                <dd data-metric-equivalent="energy">—</dd>
+              </div>
+              <div class="metric" data-metric="co2">
+                <dt data-metric-value="co2">—</dt>
+                <dd data-metric-equivalent="co2">—</dd>
+              </div>
+            </dl>
+            <p class="results-placeholder" data-results-placeholder>
+              Bitte wähle deine <strong>conversations.json</strong> aus dem ChatGPT-Export aus,
+              um personalisierte Werte zu sehen.
+            </p>
+            {% capture equivalent_notes %}{% for eq in site.data.equivalents %}{{ eq.label }}: {{ eq.note }}{% unless forloop.last %}
+{% endunless %}{% endfor %}{% endcapture %}
+            <p class="result-footnote">
+              <span data-result-footnote-text>{{ site.data.sources[0].footnote.summary }}</span>
+              {% unless equivalent_notes == blank %}
+              <span class="result-footnote__notes" data-result-footnote-notes>{{ equivalent_notes | strip | newline_to_br }}</span>
+              {% endunless %}
+              <sup>
+                <a
+                  class="footnote"
+                  data-result-footnote-ref
+                  href="#{{ site.data.sources[0].footnote.anchor_id }}"
+                  >{{ site.data.sources[0].footnote.label }}</a
+                >
+              </sup>
+            </p>
+          </article>
+        </section>
+
+        <section class="faq" id="faq" aria-labelledby="faq-title">
+          <h2 id="faq-title">FAQ</h2>
+          {% for faq in site.data.faqs %}
+          <details class="faq-item">
+            <summary>{{ faq.question }}</summary>
+            <p>{{ faq.answer }}</p>
+          </details>
+          {% endfor %}
+        </section>
+
+        <section class="contact" id="kontakt" aria-labelledby="contact-title">
+          <h2 id="contact-title">Kontakt</h2>
+          <p>Du hast eine Frage oder Anmerkung zu ecoprompt?</p>
+          <p>
+            Schreib uns gerne eine Mail an:
+            <a href="mailto:ecoprompt@timdepping.de">ecoprompt@timdepping.de</a>
+          </p>
+        </section>
+
+        <section class="sources" aria-labelledby="sources-title">
+          <h2 id="sources-title">Quellen</h2>
+          <ol class="source-list">
+            {% for source in site.data.sources %}
+            <li id="{{ source.footnote.anchor_id }}">
+              {{ source.footnote.label }}
+              <a class="source-anchor" href="{{ source.footnote.backlink }}"
+                >{{ source.footnote.citation }}</a
+              >
+              {% if source.footnote.url %}
+              &ndash;
+              <a
+                class="source-anchor"
+                href="{{ source.footnote.url }}"
+                target="_blank"
+                rel="noopener"
+                >Quelle</a
+              >
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ol>
+        </section>
+      </main>
+
+      <footer class="site-footer" aria-label="Abschluss">
+        <p>
+          Gefördert durch das Projekt
+          <a href="https://www.handeln-jetzt.org/" target="_blank" rel="noopener"
+            >„Handeln Jetzt!”</a
+          >.
+        </p>
+        <p>Mit ❤ entwickelt in Potsdam.</p>
+        <p>
+          <a class="site-footer__link" href="https://timdepping.de/impressum" target="_blank" rel="noopener">
+            Impressum
+          </a>
+        </p>
+      </footer>
     </div>
-
-    <!-- Datei Eingabe -->
-    <label for="fileInput" id="fileLabel"
-      >📂 conversations.json auswählen</label
-    >
-    <input type="file" id="fileInput" accept=".json" />
-
-    <!-- Einstellungen -->
-    <div id="settings">
-      <h2>Einstellungen</h2>
-      <label>
-        Strompreis (€/kWh):
-        <input type="number" id="strompreis" value="0.30" step="0.01" />
-        <a href="https://www.stromauskunft.de/strompreise/" target="_blank"
-          >Quelle</a
-        >
-      </label>
-      <label>
-        CO₂-Ausstoß (g/kWh):
-        <input type="number" id="co2" value="400" step="10" />
-        <a href="https://www.umweltbundesamt.de/" target="_blank">Quelle</a>
-      </label>
-      <label>
-        Energie pro 1.000 Tokens (Wh):
-        <input type="number" id="energie" value="0.355" step="0.01" />
-        <a href="https://arxiv.org/abs/2304.10198" target="_blank">Quelle</a>
-      </label>
-      <label>
-        <input type="checkbox" id="showTitles" checked /> Chat-Titel anzeigen
-      </label>
-    </div>
-
-    <!-- Statistik -->
-    <div id="stats"></div>
-    <!-- Equivalente -->
-    <div id="equivalents"></div>
-
-    <!-- Ausgabe -->
-    <div id="output"></div>
-
-    <script>
-      let chatData = null;
-
-      function estimateTokens(text) {
-        if (!text) return 0;
-        const words = text.trim().split(/\s+/).length;
-        return Math.round(words * 1.3);
-      }
-
-      function formatNumber(num) {
-        return num.toLocaleString("de-DE");
-      }
-
-      function render() {
-        if (!chatData) return;
-
-        const data = chatData;
-
-        let userCount = 0,
-          userTokens = 0,
-          userWords = 0;
-        let assistantCount = 0,
-          assistantTokens = 0,
-          assistantWords = 0;
-
-        const chats = [];
-
-        data.forEach((conv) => {
-          if (!conv.mapping) return;
-
-          let msgCount = 0,
-            wordsCount = 0,
-            tokensCount = 0;
-          let date = conv.create_time
-            ? new Date(conv.create_time * 1000)
-            : null;
-
-          Object.values(conv.mapping).forEach((node) => {
-            if (!node.message) return;
-            const role = node.message.author?.role;
-            const parts = node.message.content?.parts || [];
-            const content = parts.join(" ");
-            const tokens = estimateTokens(content);
-            const words = content.trim().split(/\s+/).length;
-
-            msgCount++;
-            wordsCount += words;
-            tokensCount += tokens;
-
-            if (role === "user") {
-              userCount++;
-              userTokens += tokens;
-              userWords += words;
-            } else if (role === "assistant") {
-              assistantCount++;
-              assistantTokens += tokens;
-              assistantWords += words;
-            }
-          });
-
-          chats.push({
-            title: conv.title || "Ohne Titel",
-            date: date ? date.toISOString().split("T")[0] : "-",
-            messages: msgCount,
-            words: wordsCount,
-            tokens: tokensCount,
-          });
-        });
-
-        // Einstellungen
-        const energieWh = parseFloat(document.getElementById("energie").value);
-        const strompreis = parseFloat(
-          document.getElementById("strompreis").value
-        );
-        const co2 = parseFloat(document.getElementById("co2").value);
-        const showTitles = document.getElementById("showTitles").checked;
-
-        const totalTokens = userTokens + assistantTokens;
-        const kWh = ((totalTokens / 1000) * energieWh) / 1000;
-        const kosten = kWh * strompreis;
-        const co2Emission = kWh * co2;
-
-        // Statistik
-        const stats = document.getElementById("stats");
-        stats.innerHTML = `
-          <h2>Statistik</h2>
-          <table>
-            <thead><tr>
-              <th>Rolle</th>
-              <th>Nachrichten</th>
-              <th>Wörter</th>
-              <th>Tokens</th>
-            </tr></thead>
-            <tbody>
-              <tr><td>User</td><td>${formatNumber(
-                userCount
-              )}</td><td>${formatNumber(userWords)}</td><td>${formatNumber(
-          userTokens
-        )}</td></tr>
-              <tr><td>Assistant</td><td>${formatNumber(
-                assistantCount
-              )}</td><td>${formatNumber(assistantWords)}</td><td>${formatNumber(
-          assistantTokens
-        )}</td></tr>
-              <tr><td><strong>Gesamt</strong></td><td>${formatNumber(
-                userCount + assistantCount
-              )}</td><td>${formatNumber(
-          userWords + assistantWords
-        )}</td><td>${formatNumber(totalTokens)}</td></tr>
-            </tbody>
-          </table>
-          <p><strong>Energieverbrauch:</strong> ${kWh
-            .toFixed(3)
-            .replace(".", ",")} kWh</p>
-          <p><strong>Stromkosten:</strong> ${kosten
-            .toFixed(2)
-            .replace(".", ",")} €</p>
-          <p><strong>CO₂-Emissionen:</strong> ${formatNumber(
-            Math.round(co2Emission)
-          )} g</p>
-        `;
-
-        // Äquivalente
-        const equivalents = document.getElementById("equivalents");
-        const smartphoneCharge = kWh / 0.005; // 5 Wh pro Ladung
-        const netflixHours = kWh / 0.15; // 0,15 kWh pro Stunde
-        const switchHours = kWh / 0.018; // 18 W tragbar
-
-        const carKm = co2Emission / 150; // ca. 150 g/km
-        const balloons = co2Emission / 16; // 1 Ballon ~16 g CO₂
-
-        equivalents.innerHTML = `
-          <h2>Anschauliche Äquivalente</h2>
-          <p><strong>⚡ Energieverbrauch:</strong></p>
-          <ul>
-            <li>${formatNumber(
-              smartphoneCharge.toFixed(1)
-            )} × Smartphone aufladen (1 Ladung ~5 Wh)</li>
-            <li>${formatNumber(
-              netflixHours.toFixed(1)
-            )} Stunden Netflix streamen (0,15 kWh/h)</li>
-            <li>${formatNumber(
-              switchHours.toFixed(1)
-            )} Stunden unterwegs Switch spielen (18 W)</li>
-          </ul>
-          <p><strong>🌍 CO₂-Emissionen:</strong></p>
-          <ul>
-            <li>entspricht einer Autofahrt von ~${formatNumber(
-              carKm.toFixed(1)
-            )} km (150 g/km)</li>
-            <li>entspricht dem Aufblasen von ~${formatNumber(
-              balloons.toFixed(1)
-            )} Luftballons (16 g/CO₂ pro Ballon)</li>
-          </ul>
-        `;
-
-        // Tabelle mit Chats
-        const output = document.getElementById("output");
-        let html = `<h2>Chats</h2><table id="chatTable"><thead><tr>`;
-        if (showTitles) html += `<th data-key="title"><span>Titel</span></th>`;
-        html += `
-          <th data-key="date"><span>Datum</span></th>
-          <th data-key="messages"><span>Nachrichten</span></th>
-          <th data-key="words"><span>Wörter</span></th>
-          <th data-key="tokens"><span>Tokens</span></th>
-        </tr></thead><tbody>`;
-
-        chats.forEach((c) => {
-          html += `<tr>
-            ${showTitles ? `<td>${c.title}</td>` : ""}
-            <td>${c.date}</td>
-            <td>${formatNumber(c.messages)}</td>
-            <td>${formatNumber(c.words)}</td>
-            <td>${formatNumber(c.tokens)}</td>
-          </tr>`;
-        });
-
-        html += "</tbody></table>";
-        output.innerHTML = html;
-
-        // Sortierung
-        const table = document.getElementById("chatTable");
-        const headers = table.querySelectorAll("th");
-        headers.forEach((th) => {
-          th.addEventListener("click", () => {
-            const key = th.dataset.key;
-            const tbody = table.querySelector("tbody");
-            const rows = Array.from(tbody.querySelectorAll("tr"));
-            const asc = !th.classList.contains("sort-asc");
-
-            headers.forEach((h) => h.classList.remove("sort-asc", "sort-desc"));
-            th.classList.add(asc ? "sort-asc" : "sort-desc");
-
-            rows.sort((a, b) => {
-              let valA = a.cells[th.cellIndex].innerText;
-              let valB = b.cells[th.cellIndex].innerText;
-
-              if (key === "date") {
-                return asc
-                  ? new Date(valA) - new Date(valB)
-                  : new Date(valB) - new Date(valA);
-              } else if (key === "title") {
-                return asc
-                  ? valA.localeCompare(valB, "de", { sensitivity: "base" })
-                  : valB.localeCompare(valA, "de", { sensitivity: "base" });
-              } else {
-                valA = valA.replace(/\./g, "").replace(",", ".");
-                valB = valB.replace(/\./g, "").replace(",", ".");
-                return asc ? valA - valB : valB - valA;
-              }
-            });
-
-            tbody.innerHTML = "";
-            rows.forEach((r) => tbody.appendChild(r));
-          });
-        });
-      }
-
-      // Datei laden
-      document
-        .getElementById("fileInput")
-        .addEventListener("change", async (e) => {
-          const file = e.target.files[0];
-          if (!file) return;
-          const text = await file.text();
-          chatData = JSON.parse(text);
-          render();
-        });
-
-      // Einstellungen triggern Re-Render
-      document.querySelectorAll("#settings input").forEach((el) => {
-        el.addEventListener("input", render);
-        el.addEventListener("change", render);
-      });
+    <script type="application/json" id="data-sources">
+      {{ site.data.sources | jsonify }}
     </script>
+    <script type="application/json" id="data-equivalents">
+      {{ site.data.equivalents | jsonify }}
+    </script>
+    <script src="{{ '/assets/js/app.js' | relative_url }}" defer></script>
   </body>
 </html>

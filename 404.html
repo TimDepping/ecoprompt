@@ -1,0 +1,113 @@
+---
+permalink: /404.html
+layout: null
+title: Seite nicht gefunden
+description: Leider konnte die gewünschte Seite nicht finden.
+---
+
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seite nicht gefunden · ecoprompt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Domine:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ '/assets/css/theme.css' | relative_url }}" />
+  </head>
+  <body class="dark ecoprompt-page">
+    <main class="page" style="padding: 4rem 1rem; text-align: center">
+      <h1 style="font-size: clamp(2rem, 5vw, 2.6rem); margin-bottom: 1rem">
+        404 – Oops!
+      </h1>
+      <p
+        style="
+          max-width: 42ch;
+          margin: 0 auto 2rem;
+          color: var(--md-sys-color-on-surface-variant);
+        "
+      >
+        Die Seite wurde nicht gefunden. Möchtest du zu ecoprompt zurückkehren?
+      </p>
+      <a class="chip" href="{{ '/' | relative_url }}">Zu ecoprompt</a>
+    </main>
+    <script>
+      (function () {
+        var body = document.body;
+        if (!body) {
+          return;
+        }
+
+        var mediaQuery = window.matchMedia
+          ? window.matchMedia('(prefers-color-scheme: dark)')
+          : null;
+        var storageKey = 'ecoprompt-theme';
+
+        function applyTheme(theme) {
+          if (theme !== 'dark' && theme !== 'light') {
+            return;
+          }
+          body.classList.remove('dark', 'light');
+          body.classList.add(theme);
+        }
+
+        function readStoredTheme() {
+          try {
+            var value = window.localStorage.getItem(storageKey);
+            return value === 'dark' || value === 'light' ? value : null;
+          } catch (error) {
+            return null;
+          }
+        }
+
+        function applySystemTheme() {
+          if (mediaQuery) {
+            applyTheme(mediaQuery.matches ? 'dark' : 'light');
+          } else {
+            applyTheme('dark');
+          }
+        }
+
+        var storedTheme = readStoredTheme();
+        var usingSystem = !storedTheme;
+
+        if (storedTheme) {
+          applyTheme(storedTheme);
+        } else {
+          applySystemTheme();
+        }
+
+        if (mediaQuery) {
+          var listener = function (event) {
+            if (!usingSystem) {
+              return;
+            }
+            applyTheme(event.matches ? 'dark' : 'light');
+          };
+          if (typeof mediaQuery.addEventListener === 'function') {
+            mediaQuery.addEventListener('change', listener);
+          } else if (typeof mediaQuery.addListener === 'function') {
+            mediaQuery.addListener(listener);
+          }
+        }
+
+        window.addEventListener('storage', function (event) {
+          if (event.key !== storageKey) {
+            return;
+          }
+          storedTheme = readStoredTheme();
+          usingSystem = !storedTheme;
+          if (storedTheme) {
+            applyTheme(storedTheme);
+          } else {
+            applySystemTheme();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

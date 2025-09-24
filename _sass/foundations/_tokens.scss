@@ -1,0 +1,184 @@
+$theme-tokens: (
+  dark: (
+    primary: rgb(180, 208, 136),
+    surface-tint: rgb(180, 208, 136),
+    on-primary: rgb(33, 54, 0),
+    primary-container: rgb(55, 78, 20),
+    on-primary-container: rgb(207, 237, 161),
+    secondary: rgb(192, 202, 172),
+    on-secondary: rgb(43, 51, 30),
+    secondary-container: rgb(65, 74, 50),
+    on-secondary-container: rgb(220, 231, 199),
+    tertiary: rgb(160, 208, 202),
+    on-tertiary: rgb(0, 55, 52),
+    tertiary-container: rgb(31, 78, 74),
+    on-tertiary-container: rgb(188, 236, 230),
+    error: rgb(255, 180, 171),
+    on-error: rgb(105, 0, 5),
+    error-container: rgb(147, 0, 10),
+    on-error-container: rgb(255, 218, 214),
+    background: rgb(18, 20, 14),
+    on-background: rgb(226, 227, 216),
+    surface: rgb(18, 20, 14),
+    on-surface: rgb(226, 227, 216),
+    surface-variant: rgb(69, 72, 61),
+    on-surface-variant: rgb(197, 200, 185),
+    outline: rgb(143, 146, 133),
+    outline-variant: rgb(69, 72, 61),
+    shadow: rgb(0, 0, 0),
+    scrim: rgb(0, 0, 0),
+    inverse-surface: rgb(226, 227, 216),
+    inverse-on-surface: rgb(47, 49, 42),
+    inverse-primary: rgb(78, 102, 42),
+    primary-fixed: rgb(207, 237, 161),
+    on-primary-fixed: rgb(17, 31, 0),
+    primary-fixed-dim: rgb(180, 208, 136),
+    on-primary-fixed-variant: rgb(55, 78, 20),
+    secondary-fixed: rgb(220, 231, 199),
+    on-secondary-fixed: rgb(22, 30, 10),
+    secondary-fixed-dim: rgb(192, 202, 172),
+    on-secondary-fixed-variant: rgb(65, 74, 50),
+    tertiary-fixed: rgb(188, 236, 230),
+    on-tertiary-fixed: rgb(0, 32, 30),
+    tertiary-fixed-dim: rgb(160, 208, 202),
+    on-tertiary-fixed-variant: rgb(31, 78, 74),
+    surface-dim: rgb(18, 20, 14),
+    surface-bright: rgb(56, 58, 50),
+    surface-container-lowest: rgb(13, 15, 9),
+    surface-container-low: rgb(26, 28, 22),
+    surface-container: rgb(30, 32, 25),
+    surface-container-high: rgb(41, 43, 35),
+    surface-container-highest: rgb(51, 54, 46)
+  ),
+  light: (
+    primary: rgb(78, 102, 42),
+    surface-tint: rgb(78, 102, 42),
+    on-primary: rgb(255, 255, 255),
+    primary-container: rgb(207, 237, 161),
+    on-primary-container: rgb(55, 78, 20),
+    secondary: rgb(88, 98, 73),
+    on-secondary: rgb(255, 255, 255),
+    secondary-container: rgb(220, 231, 199),
+    on-secondary-container: rgb(65, 74, 50),
+    tertiary: rgb(56, 102, 98),
+    on-tertiary: rgb(255, 255, 255),
+    tertiary-container: rgb(188, 236, 230),
+    on-tertiary-container: rgb(31, 78, 74),
+    error: rgb(186, 26, 26),
+    on-error: rgb(255, 255, 255),
+    error-container: rgb(255, 218, 214),
+    on-error-container: rgb(147, 0, 10),
+    background: rgb(250, 250, 238),
+    on-background: rgb(26, 28, 22),
+    surface: rgb(250, 250, 238),
+    on-surface: rgb(26, 28, 22),
+    surface-variant: rgb(225, 228, 213),
+    on-surface-variant: rgb(69, 72, 61),
+    outline: rgb(117, 121, 108),
+    outline-variant: rgb(197, 200, 185),
+    shadow: rgb(0, 0, 0),
+    scrim: rgb(0, 0, 0),
+    inverse-surface: rgb(47, 49, 42),
+    inverse-on-surface: rgb(241, 242, 230),
+    inverse-primary: rgb(180, 208, 136),
+    primary-fixed: rgb(207, 237, 161),
+    on-primary-fixed: rgb(17, 31, 0),
+    primary-fixed-dim: rgb(180, 208, 136),
+    on-primary-fixed-variant: rgb(55, 78, 20),
+    secondary-fixed: rgb(220, 231, 199),
+    on-secondary-fixed: rgb(22, 30, 10),
+    secondary-fixed-dim: rgb(192, 202, 172),
+    on-secondary-fixed-variant: rgb(65, 74, 50),
+    tertiary-fixed: rgb(188, 236, 230),
+    on-tertiary-fixed: rgb(0, 32, 30),
+    tertiary-fixed-dim: rgb(160, 208, 202),
+    on-tertiary-fixed-variant: rgb(31, 78, 74),
+    surface-dim: rgb(218, 219, 208),
+    surface-bright: rgb(250, 250, 238),
+    surface-container-lowest: rgb(255, 255, 255),
+    surface-container-low: rgb(244, 244, 233),
+    surface-container: rgb(238, 239, 227),
+    surface-container-high: rgb(232, 233, 222),
+    surface-container-highest: rgb(226, 227, 216)
+  )
+);
+
+
+$theme-custom-props: (
+  dark: (
+    elevation-header: 0 6px 16px rgba(0, 0, 0, 0.5),
+    elevation-lg: 0 10px 24px rgba(0, 0, 0, 0.45),
+    elevation-md: 0 6px 18px rgba(0, 0, 0, 0.4),
+    elevation-sm: 0 3px 12px rgba(0, 0, 0, 0.38),
+    elevation-button: 0 2px 8px rgba(0, 0, 0, 0.42),
+    elevation-button-hover: 0 4px 12px rgba(0, 0, 0, 0.48),
+    elevation-button-secondary-hover: 0 3px 10px rgba(0, 0, 0, 0.44),
+    elevation-tab-active: 0 3px 10px rgba(0, 0, 0, 0.4),
+    shape-corner-extra-small: 0.25rem,
+    shape-corner-small: 0.5rem,
+    shape-corner-medium: 0.75rem,
+    shape-corner-large: 1rem,
+    shape-corner-extra-large: 1.75rem,
+    shape-corner-button: 1.25rem,
+    shape-corner-full: 999px
+  ),
+  light: (
+    elevation-header: 0 6px 16px rgba(32, 42, 20, 0.16),
+    elevation-lg: 0 8px 24px rgba(32, 42, 20, 0.18),
+    elevation-md: 0 4px 16px rgba(32, 42, 20, 0.16),
+    elevation-sm: 0 2px 8px rgba(32, 42, 20, 0.14),
+    elevation-button: 0 2px 6px rgba(32, 42, 20, 0.2),
+    elevation-button-hover: 0 4px 12px rgba(32, 42, 20, 0.22),
+    elevation-button-secondary-hover: 0 4px 10px rgba(32, 42, 20, 0.2),
+    elevation-tab-active: 0 4px 10px rgba(32, 42, 20, 0.18),
+    shape-corner-extra-small: 0.25rem,
+    shape-corner-small: 0.5rem,
+    shape-corner-medium: 0.75rem,
+    shape-corner-large: 1rem,
+    shape-corner-extra-large: 1.75rem,
+    shape-corner-button: 1.25rem,
+    shape-corner-full: 999px
+  )
+);
+
+$derived-alpha: (
+  primary-underline: (
+    token: primary,
+    alpha: 0.6
+  ),
+  outline-50: (
+    token: outline,
+    alpha: 0.5
+  ),
+  outline-60: (
+    token: outline,
+    alpha: 0.6
+  )
+);
+
+@mixin emit-theme($selector, $tokens, $custom: null) {
+  #{$selector} {
+    @each $name, $value in $tokens {
+      --md-sys-color-#{$name}: #{$value};
+    }
+
+    @each $derived-name, $config in $derived-alpha {
+      $source-token: map-get($config, token);
+      $alpha: map-get($config, alpha);
+      $color-value: map-get($tokens, $source-token);
+
+      @if $color-value != null {
+        --md-ref-#{$derived-name}: #{rgba($color-value, $alpha)};
+      }
+    }
+
+    @if $custom != null and type-of($custom) == 'map' {
+      @each $var, $value in $custom {
+        --#{$var}: #{$value};
+      }
+    }
+  }
+}
+
+@include emit-theme('.ecoprompt-page.dark', map-get($theme-tokens, dark), map-get($theme-custom-props, dark));
+@include emit-theme('.ecoprompt-page.light', map-get($theme-tokens, light), map-get($theme-custom-props, light));

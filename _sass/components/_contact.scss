@@ -1,0 +1,25 @@
+.contact,
+.sources {
+  margin-top: 3rem;
+}
+
+.contact a {
+  font-weight: 600;
+}
+
+.source-list {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+@include respond-to(sm, down) {
+  .contact,
+  .sources {
+    margin-top: 2.25rem;
+  }
+
+  .source-list {
+    padding-left: 1.25rem;
+  }
+}

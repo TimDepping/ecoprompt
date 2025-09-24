@@ -1,0 +1,24 @@
+- id: openai
+  label: OpenAI
+  water_ml_per_prompt: 0.32
+  energy_wh_per_prompt: 0.34
+  co2_g_per_wh: 2.65
+  footnote:
+    anchor_id: source-1
+    label: "[1]"
+    citation: "Sam Altman (2025)"
+    backlink: "#results-title"
+    summary: "Sam Altman, CEO von OpenAI, gab an, dass eine durchschnittliche Anfrage 0,32 ml Wasser und 0,34 Wattstunden Strom verbraucht."
+    url: "https://www.theverge.com/2023/11/7/23950519/openai-water-consumption-sam-altman"
+- id: literature
+  label: Literatur
+  water_ml_per_prompt: 1.5
+  energy_wh_per_prompt: 0.5
+  co2_g_per_wh: 3.2
+  footnote:
+    anchor_id: source-2
+    label: "[2]"
+    citation: "Henderson et al. (2023)"
+    backlink: "#results-title"
+    summary: "Henderson et al. (2023) schätzen für große Sprachmodelle im Mittel 0,48 ml Wasser und 0,44 Wattstunden pro Anfrage bei einem Emissionsfaktor von 3,2 g CO₂ je Wattstunde."
+    url: "https://arxiv.org/abs/2304.03271"

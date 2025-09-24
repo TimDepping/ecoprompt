@@ -1,0 +1,3 @@
+question,answer
+"Wurde das Training für das KI-Modell mit eingerechnet?","Nein. ecoprompt betrachtet den Verbrauch pro Prompt in der Nutzung. Der Ressourcenaufwand für das Training variiert stark zwischen Modellen und ist nicht Teil des Exports."
+"Verbraucht jedes Modell gleich viel Ressourcen?","Der Verbrauch hängt von Modellarchitektur, Prompt-Länge und der jeweiligen Infrastruktur ab. ecoprompt verwendet Durchschnittswerte der gewählten Quelle."

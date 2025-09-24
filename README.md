@@ -1,1 +1,1 @@
-# chatgpt-climate-calculator
+# ecoprompt

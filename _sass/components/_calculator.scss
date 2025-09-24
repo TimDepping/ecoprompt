@@ -1,0 +1,44 @@
+.calculation {
+  margin-top: 3rem;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.calculation-block {
+  padding: 1.5rem 1rem;
+}
+
+.calculation-block h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  color: var(--md-sys-color-secondary);
+}
+
+.calculation-block p {
+  margin: 0;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.calculation-divider {
+  width: 220px;
+  height: 2px;
+  margin: 0.5rem auto;
+  background-color: var(--md-sys-color-outline);
+  border-radius: var(--shape-corner-full, 999px);
+}
+
+@include respond-to(sm, down) {
+  .calculation {
+    margin-top: 2rem;
+    padding: 1.5rem 0 1.75rem;
+  }
+
+  .calculation-block {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .calculation-divider {
+    width: 180px;
+    margin: 0.25rem auto;
+  }
+}

@@ -1,0 +1,26 @@
+.process h2,
+.calculation h2,
+.results h2,
+.faq h2,
+.contact h2,
+.sources h2 {
+  font-size: 1.6rem;
+  margin: 0 0 1rem;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.footnote,
+.source-anchor {
+  color: var(--md-sys-color-primary);
+  text-decoration: none;
+}
+
+.footnote:hover,
+.footnote:focus-visible,
+.source-anchor:hover,
+.source-anchor:focus-visible {
+  text-decoration: underline;
+}

@@ -1,0 +1,21 @@
+- id: water_bottle
+  metric: water
+  label: "Flaschen Wasser"
+  unit_value: 500
+  unit_unit: "ml"
+  precision: 2
+  note: "1 handelsübliche Mehrwegflasche enthält etwa 0,5 Liter."
+- id: smartphone_charge
+  metric: energy
+  label: "Smartphone-Ladungen"
+  unit_value: 15
+  unit_unit: "Wh"
+  precision: 2
+  note: "Eine vollständige Smartphone-Ladung wird mit durchschnittlich 15 Wh angesetzt."
+- id: car_km
+  metric: co2
+  label: "km Auto fahren"
+  unit_value: 166
+  unit_unit: "g"
+  precision: 2
+  note: "Ein durchschnittlicher Pkw verursacht rund 166 g CO₂ pro Kilometer."
