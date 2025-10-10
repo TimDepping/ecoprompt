@@ -1,24 +1,79 @@
-- id: openai
-  label: OpenAI
-  water_ml_per_prompt: 0.32
-  energy_wh_per_prompt: 0.34
-  co2_g_per_wh: 2.65
-  footnote:
-    anchor_id: source-1
+tabs:
+  - id: openai
+    label: OpenAI
+    water_ml_per_prompt: 0.32
+    energy_wh_per_prompt: 0.34
+    co2_g_per_wh: 0.367
+    footnote:
+      anchor_id: source-1
+      label: "[1][3]"
+      citation: "Sam Altman (2025)"
+      backlink: "#results-title"
+      summary: "Sam Altman nennt 0,34 Wh Energie und 0,00032176 Liter Wasser pro Anfrage als OpenAI-Durchschnittswerte; die CO₂-Berechnung nutzt den Emissionsfaktor der U.S. Energy Information Administration (EIA) von 0,367 g CO₂ je Wh, konvertiert aus 0,81 Pfund CO₂ je kWh. [3]"
+  - id: literature
+    label: Literatur
+    water_ml_per_prompt: 1.5
+    energy_wh_per_prompt: 0.421
+    co2_g_per_wh: 0.367
+    footnote:
+      anchor_id: source-2
+      label: "[2][3]"
+      citation: "GPT-4o Infrastruktur (2025); EIA FAQ (2025)"
+      backlink: "#results-title"
+      summary: "Eine Studie aus 2025 berechnet für einen mittellangen Prompt mit GPT-4o etwa 0,421 Wh Rechenenergie und 1,5 ml Wasser; die CO₂-Berechnung nutzt den Emissionsfaktor der U.S. Energy Information Administration (EIA) von 0,367 g CO₂ je Wh, konvertiert aus 0,81 Pfund CO₂ je kWh."
+references:
+  - anchor_id: source-1
     label: "[1]"
     citation: "Sam Altman (2025)"
-    backlink: "#results-title"
-    summary: "Sam Altman, CEO von OpenAI, gab an, dass eine durchschnittliche Anfrage 0,32 ml Wasser und 0,34 Wattstunden Strom verbraucht."
-    url: "https://www.theverge.com/2023/11/7/23950519/openai-water-consumption-sam-altman"
-- id: literature
-  label: Literatur
-  water_ml_per_prompt: 1.5
-  energy_wh_per_prompt: 0.5
-  co2_g_per_wh: 3.2
-  footnote:
-    anchor_id: source-2
+    url: "https://blog.samaltman.com/the-gentle-singularity"
+    summary: "OpenAI-CEO Sam Altman streicht in seinem Blog hervor, dass eine durchschnittliche Anfrage etwa 0,34 Wh Strom und 0,00032176 Liter Wasser benötigt."
+  - anchor_id: source-2
     label: "[2]"
-    citation: "Henderson et al. (2023)"
-    backlink: "#results-title"
-    summary: "Henderson et al. (2023) schätzen für große Sprachmodelle im Mittel 0,48 ml Wasser und 0,44 Wattstunden pro Anfrage bei einem Emissionsfaktor von 3,2 g CO₂ je Wattstunde."
+    citation: "Studie zum Ressourcenverbrauch von LLMs (2025)"
+    url: "https://arxiv.org/pdf/2505.09598v2"
+    summary: "Die Studie aus 2025 definiert einen mittellangen GPT-4o-Prompt mit rund 0,421 Wh Rechenenergie und 1,5 ml Wasser."
+  - anchor_id: source-3
+    label: "[3]"
+    citation: "EIA FAQ (2025)"
+    url: "https://www.eia.gov/tools/faqs/faq.php?id=74&t=11"
+    summary: "Die U.S. Energy Information Administration beziffert den durchschnittlichen Strommix mit 0,81 Pfund CO₂ je kWh, was 0,367 g CO₂ je Wh entspricht."
+  - anchor_id: source-4
+    label: "[4]"
+    citation: "EPRI White Paper (2024)"
+    url: "https://www.epri.com/research/products/3002028905"
+    summary: "Das Electric Power Research Institute (EPRI) beziffert Trainingszeiten und Stromverbrauch von GPT-3 und GPT-4 und schätzt den KI-Energieverbrauch für Betrieb, Training und Entwicklung."
+  - anchor_id: source-5
+    label: "[5]"
+    citation: "Studie zum Wasserverbrauch von KI Modellen (2023)"
     url: "https://arxiv.org/abs/2304.03271"
+    summary: "Die Analyse schätzt, dass das Training von GPT-3 in Microsoft-Rechenzentren in den USA rund 5.4 Millionen Liter Süßwasser verbrauchte."
+  - anchor_id: source-6
+    label: "[6]"
+    citation: "Business Insider (2024)"
+    url: "https://www.businessinsider.de/wirtschaft/chatgpt-stromverbrauch-so-lange-muesste-ein-ofen-fuer-eine-frage-laufen-laut-altmann/"
+    summary: "Berichtet über Microsofts 20-jährigen Stromliefervertrag mit einem Kernkraftwerk in Pennsylvania zur Versorgung von KI-Rechenzentren."
+  - anchor_id: source-7
+    label: "[7]"
+    citation: "LowCarbonPower (2025)"
+    url: "https://lowcarbonpower.org/de/region/Vereinigte_Staaten"
+    summary: "Stellt den US-Strommix 2024/2025 mit Anteilen von Gas, Kohle, Wind, Solar und Wasserkraft zusammen."
+  - anchor_id: source-8
+    label: "[8]"
+    citation: "NDR Info (2025)"
+    url: "https://www.ndr.de/nachrichten/info/Strommix-Deutschland-Wie-ist-der-Anteil-erneuerbarer-Energien,strommix102.html"
+    summary: "Beschreibt die Zusammensetzung des deutschen Strommixes mit Fokus auf den Anteil erneuerbarer Energien."
+  - anchor_id: source-9
+    label: "[9]"
+    citation: "Fraunhofer ISE (2025)"
+    url: "https://www.ise.fraunhofer.de/de/presse-und-medien/presseinformationen/2025/nettostromerzeugung-im-1-halbjahr-2025-solarstrom-europaweit-auf-dem-vormarsch.html"
+    summary: "Analysiert die Nettostromerzeugung in Deutschland und hebt den Ausbau von Wind- und Solarenergie hervor."
+  - anchor_id: source-10
+    label: "[10]"
+    citation: "Destatis (2025)"
+    url: "https://www.destatis.de/DE/Presse/Pressemitteilungen/2025/03/PD25_091_43312.html"
+    summary: "Aktualisiert die Zahlen zum deutschen Stromhandel 2025 und betont die Importabhängigkeit."
+  - anchor_id: source-11
+    label: "[11]"
+    citation: "Umweltbundesamt (2024)"
+    url: "https://www.umweltbundesamt.de/themen/co2-emissionen-pro-kilowattstunde-strom-2024"
+    summary: "Das Umweltbundesamt weist für Deutschland etwa 0,283 g CO₂ je Wattstunde Strom aus."

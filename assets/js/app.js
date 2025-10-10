@@ -7,7 +7,13 @@
     return;
   }
 
-  const sources = safeParseJson(sourcesNode.textContent) || [];
+  const sourcesData = safeParseJson(sourcesNode.textContent) || {};
+  let sources = [];
+  if (Array.isArray(sourcesData)) {
+    sources = sourcesData;
+  } else if (sourcesData && Array.isArray(sourcesData.tabs)) {
+    sources = sourcesData.tabs;
+  }
   const equivalents = safeParseJson(equivalentsNode.textContent) || [];
   if (!sources.length) {
     return;
@@ -220,17 +226,21 @@
     if (!els.footnoteNotes) {
       return;
     }
-    els.footnoteNotes.textContent = '';
+    els.footnoteNotes.replaceChildren();
     if (!notes || !notes.length) {
       els.footnoteNotes.style.display = 'none';
       return;
     }
     els.footnoteNotes.style.display = '';
-    notes.forEach((entry, index) => {
-      els.footnoteNotes.appendChild(document.createTextNode(entry));
-      if (index < notes.length - 1) {
-        els.footnoteNotes.appendChild(document.createElement('br'));
-      }
+    const heading = document.createElement('span');
+    heading.className = 'result-footnote__heading';
+    heading.textContent = 'Vergleichswerte';
+    els.footnoteNotes.appendChild(heading);
+    notes.forEach((entry) => {
+      const item = document.createElement('span');
+      item.className = 'result-footnote__item';
+      item.textContent = entry;
+      els.footnoteNotes.appendChild(item);
     });
   }
 

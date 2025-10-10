@@ -11,6 +11,7 @@
   margin: 0;
   padding-left: 1.5rem;
   color: var(--md-sys-color-on-surface-variant);
+  list-style: none;
 }
 
 @include respond-to(sm, down) {

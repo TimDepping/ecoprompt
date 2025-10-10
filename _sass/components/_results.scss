@@ -74,19 +74,33 @@
 }
 
 .metric dd {
-  margin: 0;
+  margin: 1.25rem 0 0;
   color: var(--md-sys-color-on-surface-variant);
+}
+
+.result-footnote__notes {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.result-footnote__heading {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+
+.result-footnote__item {
+  display: block;
+  margin-top: 0.25rem;
 }
 
 .result-footnote {
   margin: 0;
   font-size: 0.9rem;
   color: var(--md-sys-color-on-surface-variant);
-}
-
-.result-footnote__notes {
-  display: block;
-  margin-top: 0.25rem;
 }
 
 

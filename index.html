@@ -79,9 +79,6 @@ layout: null
       </header>
 
       <main class="page" id="top">
-        <aside class="page-notice" role="status">
-          <strong>Hinweis:</strong> Diese Seite befindet sich aktuell noch in Bearbeitung. Inhalte können sich ändern.
-        </aside>
         <section class="hero" aria-labelledby="hero-title">
           <h1 id="hero-title" class="hero-title">
             Was verbraucht deine ChatGPT-Nutzung an Ressourcen?
@@ -104,6 +101,7 @@ layout: null
                 <p class="step-copy">
                   Exportiere deine Daten unter Datenkontrollen in den
                   ChatGPT-Einstellungen.<br />
+                  Stelle sicher, dass du im Browser bei ChatGPT angemeldet bist, damit der Link aus der Export-E-Mail funktioniert.<br />
                   <a
                     href="https://chatgpt.com/#settings/DataControls"
                     >Hier geht's zum Export</a
@@ -115,7 +113,7 @@ layout: null
               <div class="step-number">2</div>
               <div class="step-body">
                 <p class="step-copy">
-                  Lade die Export-Datei aus der E-Mail herunter.<br />
+                  Lade die Export-Datei aus der E-Mail herunter. Es kann ein paar Minuten dauern, bis sie ankommt.<br />
                   Bewahre die ZIP-Datei auf deinem Gerät auf.
                 </p>
               </div>
@@ -131,7 +129,7 @@ layout: null
                 </p>
               </div>
             </li>
-          </ol>
+          </ul>
           <div class="action-group" id="upload">
             <input
               class="file-input"
@@ -176,7 +174,7 @@ layout: null
             der du vertrauen möchtest:
           </p>
           <div class="tabs" aria-label="Quellen">
-            {% assign sources = site.data.sources %}
+            {% assign sources = site.data.sources.tabs %}
             {% for source in sources %}
             <button
               class="tab{% if forloop.first %} is-active{% endif %}"
@@ -219,18 +217,21 @@ layout: null
             {% capture equivalent_notes %}{% for eq in site.data.equivalents %}{{ eq.label }}: {{ eq.note }}{% unless forloop.last %}
 {% endunless %}{% endfor %}{% endcapture %}
             <p class="result-footnote">
-              <span data-result-footnote-text>{{ site.data.sources[0].footnote.summary }}</span>
-              {% unless equivalent_notes == blank %}
-              <span class="result-footnote__notes" data-result-footnote-notes>{{ equivalent_notes | strip | newline_to_br }}</span>
-              {% endunless %}
+              <span data-result-footnote-text>{{ sources[0].footnote.summary }}</span>
               <sup>
                 <a
                   class="footnote"
                   data-result-footnote-ref
-                  href="#{{ site.data.sources[0].footnote.anchor_id }}"
-                  >{{ site.data.sources[0].footnote.label }}</a
+                  href="#{{ sources[0].footnote.anchor_id }}"
+                  >{{ sources[0].footnote.label }}</a
                 >
               </sup>
+              {% unless equivalent_notes == blank %}
+              <div class="result-footnote__notes" data-result-footnote-notes>
+                <span class="result-footnote__heading">Vergleichswerte</span>
+                {{ equivalent_notes | strip | newline_to_br }}
+              </div>
+              {% endunless %}
             </p>
           </article>
         </section>
@@ -256,26 +257,48 @@ layout: null
 
         <section class="sources" aria-labelledby="sources-title">
           <h2 id="sources-title">Quellen</h2>
-          <ol class="source-list">
-            {% for source in site.data.sources %}
-            <li id="{{ source.footnote.anchor_id }}">
-              {{ source.footnote.label }}
-              <a class="source-anchor" href="{{ source.footnote.backlink }}"
-                >{{ source.footnote.citation }}</a
-              >
-              {% if source.footnote.url %}
-              &ndash;
+          {% assign references = site.data.sources.references %}
+          <ul class="source-list">
+            {% for reference in references %}
+            <li id="{{ reference.anchor_id }}">
+              {{ reference.label }}
+              {% if reference.url %}
               <a
                 class="source-anchor"
-                href="{{ source.footnote.url }}"
+                href="{{ reference.url }}"
                 target="_blank"
                 rel="noopener"
-                >Quelle</a
-              >
+                >{{ reference.citation }}</a>
+              {% elsif reference.urls %}
+              {% assign primary = reference.urls | first %}
+              <a
+                class="source-anchor"
+                href="{{ primary.href }}"
+                target="_blank"
+                rel="noopener"
+                >{{ reference.citation }}</a>
+              {% if reference.urls | size > 1 %}
+              &ndash;
+              {% for link in reference.urls offset:1 %}
+              <a
+                class="source-anchor"
+                href="{{ link.href }}"
+                target="_blank"
+                rel="noopener"
+                >{{ link.label | default: 'Weitere Informationen' }}</a>{% unless forloop.last %}, {% endunless %}
+              {% endfor %}
+              {% endif %}
+              {% elsif reference.backlink %}
+              <a class="source-anchor" href="{{ reference.backlink }}">{{ reference.citation }}</a>
+              {% else %}
+              {{ reference.citation }}
+              {% endif %}
+              {% if reference.summary %}
+              &ndash; {{ reference.summary }}
               {% endif %}
             </li>
             {% endfor %}
-          </ol>
+          </ul>
         </section>
       </main>
 
