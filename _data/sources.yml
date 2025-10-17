@@ -1,7 +1,7 @@
 tabs:
   - id: openai
     label: OpenAI
-    water_ml_per_prompt: 0.32
+    water_ml_per_prompt: 0.32176
     energy_wh_per_prompt: 0.34
     co2_g_per_wh: 0.367
     footnote:
@@ -12,7 +12,7 @@ tabs:
           label: "[3]"
       citation: "Sam Altman (2025)"
       backlink: "#results-title"
-      summary: "Sam Altman (CEO von Open AI) nennt 0,34 Wh Energie und 0,00032176 Liter Wasser pro Anfrage als OpenAI-Durchschnittswerte; OpenAI macht keine Angaben zum CO₂-Verbrauch, deshalb nutzt die CO₂-Berechnung den Emissionsfaktor der U.S. Energy Information Administration (EIA) von 0,367 g CO₂ je Wh, konvertiert aus 0,81 Pfund CO₂ je kWh."
+      summary: "Sam Altman (CEO von Open AI) nennt 0,34 Wh Energie und 0,32176 ml Wasser pro Anfrage als OpenAI-Durchschnittswerte; OpenAI macht keine Angaben zum CO₂-Verbrauch, deshalb nutzt die CO₂-Berechnung den Emissionsfaktor der U.S. Energy Information Administration (EIA) von 0,367 g CO₂ je Wh, konvertiert aus 0,81 Pfund CO₂ je kWh."
   - id: literature
     label: Literatur
     water_ml_per_prompt: 1.5

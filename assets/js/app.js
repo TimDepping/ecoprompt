@@ -77,7 +77,7 @@
   const metricDisplayConfig = {
     water: {
       unitLabel: 'Milliliter Wasser',
-      formatValue: (totalMl) => decimalFormatter(0).format(totalMl),
+      formatValue: (totalMl) => decimalFormatter(2).format(totalMl),
     },
     energy: {
       unitLabel: 'Wattstunden',
@@ -85,7 +85,7 @@
     },
     co2: {
       unitLabel: 'g CO₂',
-      formatValue: (totalG) => decimalFormatter(0).format(totalG),
+      formatValue: (totalG) => decimalFormatter(2).format(totalG),
     },
   };
 
