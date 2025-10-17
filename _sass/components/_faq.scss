@@ -38,6 +38,7 @@
 .faq-item p {
   margin: 0.5rem 0 0;
   color: var(--md-sys-color-on-surface-variant);
+  text-align: justify;
 }
 
 @include respond-to(sm, down) {

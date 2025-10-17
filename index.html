@@ -218,14 +218,12 @@ layout: null
 {% endunless %}{% endfor %}{% endcapture %}
             <p class="result-footnote">
               <span data-result-footnote-text>{{ sources[0].footnote.summary }}</span>
-              <sup>
-                <a
-                  class="footnote"
-                  data-result-footnote-ref
-                  href="#{{ sources[0].footnote.anchor_id }}"
-                  >{{ sources[0].footnote.label }}</a
-                >
-              </sup>
+              {% assign initial_references = sources[0].footnote.references | default: empty %}
+              <span class="result-footnote__refs" data-result-footnote-refs>
+                {% for reference in initial_references %}
+                <a class="footnote" href="#{{ reference.anchor_id }}">{{ reference.label }}</a>{% unless forloop.last %} {% endunless %}
+                {% endfor %}
+              </span>
               {% unless equivalent_notes == blank %}
               <div class="result-footnote__notes" data-result-footnote-notes>
                 <span class="result-footnote__heading">Vergleichswerte</span>

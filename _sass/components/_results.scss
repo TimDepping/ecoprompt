@@ -101,6 +101,15 @@
   margin: 0;
   font-size: 0.9rem;
   color: var(--md-sys-color-on-surface-variant);
+  text-align: justify;
+}
+
+.result-footnote__refs {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin-left: 0.5rem;
+  align-items: baseline;
+  flex-wrap: wrap;
 }
 
 

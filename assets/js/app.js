@@ -60,7 +60,7 @@
     },
     footnoteText: document.querySelector('[data-result-footnote-text]'),
     footnoteNotes: document.querySelector('[data-result-footnote-notes]'),
-    footnoteLink: document.querySelector('[data-result-footnote-ref]'),
+    footnoteRefs: document.querySelector('[data-result-footnote-refs]'),
     resultButton: document.getElementById('jump-to-results'),
     tabButtons: Array.from(document.querySelectorAll('[data-source-button]')),
   };
@@ -244,8 +244,32 @@
     });
   }
 
+  function renderFootnoteReferences(references) {
+    if (!els.footnoteRefs) {
+      return;
+    }
+    const container = els.footnoteRefs;
+    container.replaceChildren();
+    if (!references || !references.length) {
+      container.style.display = 'none';
+      return;
+    }
+    container.style.display = '';
+    references.forEach((ref) => {
+      if (!ref || !ref.anchor_id) {
+        return;
+      }
+      const anchor = document.createElement('a');
+      anchor.className = 'footnote';
+      anchor.setAttribute('href', `#${ref.anchor_id}`);
+      const rawLabel = ref.label ? String(ref.label).trim() : '';
+      anchor.textContent = rawLabel || `[${ref.anchor_id}]`;
+      container.appendChild(anchor);
+    });
+  }
+
   function renderFootnote() {
-    if (!els.footnoteText || !els.footnoteLink || !state.activeSourceId) {
+    if (!els.footnoteText || !els.footnoteRefs || !state.activeSourceId) {
       return;
     }
     const source = sourceMap.get(state.activeSourceId);
@@ -256,10 +280,8 @@
     const equivalentNotes = getEquivalentNotes();
     els.footnoteText.textContent = summary;
     renderEquivalentNotes(equivalentNotes);
-    els.footnoteLink.textContent = source.footnote.label || '';
-    if (source.footnote.anchor_id) {
-      els.footnoteLink.setAttribute('href', `#${source.footnote.anchor_id}`);
-    }
+    const references = Array.isArray(source.footnote.references) ? source.footnote.references : [];
+    renderFootnoteReferences(references);
   }
 
   function updateResultCardLabel() {
