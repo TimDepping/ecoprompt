@@ -68,9 +68,10 @@
   const numberFormatter = new Intl.NumberFormat('de-DE');
 
   function decimalFormatter(decimals) {
+    const fractionDigits = Math.max(0, Math.trunc(decimals || 0));
     return new Intl.NumberFormat('de-DE', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: Math.max(0, decimals || 0),
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits,
     });
   }
 
